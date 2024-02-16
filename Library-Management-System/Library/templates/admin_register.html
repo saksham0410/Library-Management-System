@@ -8,7 +8,7 @@
          {{message}}
      </div>
      {% endfor %}
-     <h1 class='display-4 text-center'>Register</h1><br>
+     <h1 class='display-5 text-center'>Librarian Register</h1><br>
 
      <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -39,6 +39,16 @@
          </div>
      </div>
 
+     <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class='input-group-text'>
+                <div class='custom-control custom-switch'>
+                    <input type='checkbox' class='custom-control-input' id='isadmin' name="isAdmin">
+                    <label class='custom-control-label' for='isadmin'>Librarian</label>
+                 </div>
+             </div>
+         </div>
+     </div>
 
      <button class='btn btn-lg btn-primary btn-block' type='submit'>Register</button>
  </form>

@@ -1,5 +1,5 @@
 {% extends 'withoutlogin.html' %}
-{% block title %}Admin{% endblock %}
+{% block title %}Librarian{% endblock %}
 {% block content %}
 <form class='text-center mt-5 container' style="width: 40%;" action='/admin' method='POST'>
     {% for message in get_flashed_messages() %}
@@ -8,7 +8,7 @@
         {{message}}
     </div>
     {% endfor %}
-    <h1 class='display-4 text-center'>Admin</h1><br>
+    <h1 class='display-4 text-center'>Librarian</h1><br>
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">

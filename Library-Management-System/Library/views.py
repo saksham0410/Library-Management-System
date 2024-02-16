@@ -88,6 +88,31 @@ class RegisterView(MethodView):
         return redirect(url_for("main.dashboard"))
 
 
+class Admin_RegisterView(MethodView):
+    def get(self):
+        return render_template("admin_register.html", year=datetime.now().year)
+
+    def post(self):
+        name = request.form.get("name")
+        email = request.form.get("email")
+        isadmin = request.form.get("isAdmin")
+
+        password = generate_password_hash(request.form.get("password"), method="sha256")
+        if User.query.filter_by(email=email).first():
+            flash("User already exists!")
+            return redirect(url_for("main.admin_register"))
+        if (isadmin == "on"):
+            user = User(name=name, email=email, password=password, admin=True)
+        else:
+            user = User(name=name, email=email, password=password)
+        # user = User(name=name, email=email, password=password, admin=True)
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        if request.args.get("next"):
+            return redirect(request.args.get("next"))
+        return redirect(url_for("main.dashboard"))
+
 class AdminView(MethodView):
     def get(self):
         return render_template("admin.html", year=datetime.now().year)
@@ -108,7 +133,7 @@ class AdminView(MethodView):
 @main.route("/dashboard", methods=["GET"])
 @login_required
 def dashboard():
-    copies = db.session.query(Book.id, Book.name, Book.author, Copy.date_issued, Copy.date_return) \
+    copies = db.session.query(Book.id, Book.name, Book.author, Book.publication_year, Book.genre, Copy.date_issued, Copy.date_return) \
     .join(Book).filter(Copy.book == Book.id).filter(Copy.issued_by == current_user.id).all()
 
     if copies:
@@ -149,6 +174,8 @@ class AddBookView(MethodView):
     def post(self):
         name = request.form.get("name")
         author = request.form.get("author")
+        publication_year = request.form.get("publication_year")
+        genre = request.form.get("genre")
         description = request.form.get("description")
         number = int(request.form.get("number"))
         book = Book.query.filter_by(name=name).first()
@@ -158,10 +185,13 @@ class AddBookView(MethodView):
         book = Book(
             name=name,
             author=author,
+            publication_year=publication_year,
+            genre=genre,
             description=description,
             total_copy=number,
             present_copy=number,
             issued_copy=0,
+
         )
 
         for _ in range(number):
@@ -201,7 +231,7 @@ class IssueBookView(MethodView):
         copy.book = book_id
         copy.issued_by = current_user.id
         copy.date_issued = datetime.now()
-        copy.date_return = datetime.now() + timedelta(days=1)
+        copy.date_return = datetime.now() + timedelta(days=2)
         db.session.commit()
 
         book = Book.query.filter_by(
@@ -272,6 +302,7 @@ class RemoveBookView(MethodView):
 
 
 main.add_url_rule("/register", view_func=RegisterView.as_view("register"))
+main.add_url_rule("/admin_register", view_func=Admin_RegisterView.as_view("admin_register"))
 main.add_url_rule("/login", view_func=LoginView.as_view("login"))
 main.add_url_rule("/admin", view_func=AdminView.as_view("admin"))
 

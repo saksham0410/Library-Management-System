@@ -14,7 +14,7 @@ db.create_all()
 if __name__ == "__main__":
     HOST = os.environ.get("SERVER_HOST", "localhost")
     try:
-        PORT = int(os.environ.get("SERVER_PORT", "9500"))
+        PORT = int(os.environ.get("SERVER_PORT", "9000"))
     except ValueError:
-        PORT = 9500
+        PORT = 9000
     application.run(HOST, PORT, threaded=True, debug=True)

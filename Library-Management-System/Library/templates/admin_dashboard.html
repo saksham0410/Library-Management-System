@@ -29,6 +29,8 @@
                <th scope="col">#</th>
                <th scope="col">Name</th>
                <th scope="col">Author</th>
+               <th scope="col">Publication Year</th>
+               <th scope="col">Genre</th>
                <th scope="col">Description</th>
                <th scope="col">Total Copies</th>
                <th class="col">Copies Available</th>
@@ -41,6 +43,8 @@
                     <td scope='row'>{{ book.id }}</td>
                     <td>{{ book.name }}</td>
                     <td>{{ book.author }}</td>
+                    <td>{{ book.publication_year }}</td>
+                    <td>{{ book.genre }}</td>
                     <td>{{ book.description }}</td>
                     <td>{{ book.total_copy }}</td>
                     <td>{{ book.present_copy }}</td>
@@ -62,11 +66,15 @@
                                         </button>
                                    </div>
                                    <div class="text-justify ml-5 mr-5">
+                                        {% for i in book.copy %}
                                         <p> Author ~ {{book.author}} <br>
-                                             Date Added ~ {{book.date_added}} <br>
+                                             Date Added ~ {{i.date_added}} <br>
+                                             Publication Year ~ {{book.publication_year}} <br>
+                                             Genre ~ {{book.genre}} <br>
                                              Description ~ {{book.description}}<br>
                                              Copies ~ {{ book.total_copy}}</p>
                                         <hr style="border: 3px solid black;border-radius: 5px;" />
+                                        {% endfor %}
                                         {% for i in book.copy %}
                                         <p># ~ {{i.id}} <br>
                                              Date Added ~ {{i.date_added}}<br>

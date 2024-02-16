@@ -16,6 +16,8 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
     author = db.Column(db.String(255))
+    publication_year = db.Column(db.Integer)
+    genre = db.Column(db.String(255))
     description = db.Column(db.Text)
     copy = db.relationship(
         "Copy", backref=db.backref("posts", lazy=True), cascade="all,delete"
