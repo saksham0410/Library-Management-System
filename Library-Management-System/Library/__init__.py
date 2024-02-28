@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config.from_object("config.ProductionConfig")
+app.config.from_object("config.TestConfig")
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 migrate = Migrate(app, db)
