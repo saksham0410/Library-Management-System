@@ -4,7 +4,7 @@ Routes and views for the flask application.
 
 from datetime import datetime, timedelta
 from functools import wraps
-
+from sqlalchemy import update
 from flask import flash, redirect, render_template, request, url_for
 from flask.blueprints import Blueprint
 from flask.views import MethodView
@@ -250,13 +250,14 @@ class ReturnBookView(MethodView):
     def get(self):
         copies = db.session.query(Book.id, Book.name, Book.author, Copy.issued_by) \
         .join(Book).filter(Copy.book == Book.id).filter(Copy.issued_by == current_user.id).all()
-
-        if copies:
+        if len(copies) > 0:
             return render_template(
                 "return.html", books=copies, year=datetime.now().year
             )
+        else:
+            flash("You don't have any books issued!")
+            return render_template("return.html")
 
-        flash("You don't have any books issued!")
         return render_template(url_for("main.dashboard"))
 
     def post(self):
@@ -277,6 +278,38 @@ class ReturnBookView(MethodView):
         db.session.commit()
         flash("Book returned successfully!")
         return redirect(url_for("main.dashboard"))
+
+class EditBookView(MethodView):
+    def get(self):
+        books = Book.query.filter_by().all()
+        if books:
+            return render_template(
+                "edit_book.html", year=datetime.now().year, books=Book.query.all()
+            )
+
+        flash("No books are available to be removed!")
+        return render_template(
+            "edit_book.html", year=datetime.now().year, books=Book.query.all()
+        )
+
+    def post(self):
+        name = request.form.get("name")
+        author = request.form.get("author")
+        publication_year = request.form.get("publication_year")
+        genre = request.form.get("genre")
+        description = request.form.get("description")
+        number = int(request.form.get("number"))
+        book = Book.query.filter_by(name=name).first()
+        book.author=author
+        book.publication_year=publication_year
+        book.genre=genre
+        book.total_copy=number
+        book.description=description
+        print(book.author, book.publication_year, book.genre, book.description)
+        db.session.commit()
+        book.query.all()
+        flash("Book Updated successfully!")
+        return redirect(url_for("main.admin_dashboard"))
 
 
 class RemoveBookView(MethodView):
@@ -316,6 +349,9 @@ main.add_url_rule(
 )
 main.add_url_rule(
     "/return/book", view_func=login_required(ReturnBookView.as_view("return_book"))
+)
+main.add_url_rule(
+    "/edit/book", view_func=login_required(EditBookView.as_view("edit_book"))
 )
 main.add_url_rule(
     "/remove/book", view_func=login_required(RemoveBookView.as_view("remove_book"))

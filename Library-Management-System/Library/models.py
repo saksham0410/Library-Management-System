@@ -20,7 +20,7 @@ class Book(db.Model):
     genre = db.Column(db.String(255))
     description = db.Column(db.Text)
     copy = db.relationship(
-        "Copy", backref=db.backref("posts", lazy=True), cascade="all,delete"
+        "Copy", backref=db.backref("posts", lazy=True) #, cascade="all,delete"
     )
     total_copy = db.Column(db.Integer)
     issued_copy = db.Column(db.Integer)

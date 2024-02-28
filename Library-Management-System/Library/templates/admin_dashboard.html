@@ -1,5 +1,5 @@
 {% extends 'admin_layout.html' %}
-{% block title %}Admin/Librarian Dashboard{% endblock %}
+{% block title %}Librarian Dashboard{% endblock %}
 {% block nav %}
 <div class="input-group mb-3" style="width: 300px;">
     <div class="input-group-prepend" >
@@ -66,15 +66,12 @@
                                         </button>
                                    </div>
                                    <div class="text-justify ml-5 mr-5">
-                                        {% for i in book.copy %}
                                         <p> Author ~ {{book.author}} <br>
-                                             Date Added ~ {{i.date_added}} <br>
                                              Publication Year ~ {{book.publication_year}} <br>
                                              Genre ~ {{book.genre}} <br>
                                              Description ~ {{book.description}}<br>
                                              Copies ~ {{ book.total_copy}}</p>
                                         <hr style="border: 3px solid black;border-radius: 5px;" />
-                                        {% endfor %}
                                         {% for i in book.copy %}
                                         <p># ~ {{i.id}} <br>
                                              Date Added ~ {{i.date_added}}<br>

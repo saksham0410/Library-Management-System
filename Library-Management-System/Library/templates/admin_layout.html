@@ -33,6 +33,9 @@
                          <a class='nav-link' href='/add/book'>Add Book</a>
                     </li>
                     <li class='nav-item active ml-4'>
+                         <a class='nav-link' href='/edit/book'>Edit Book</a>
+                    </li>
+                    <li class='nav-item active ml-4'>
                          <a class='nav-link' href='/remove/book'>Remove Book</a>
                     </li>
                     <li class='nav-item active ml-4'>
@@ -46,7 +49,7 @@
      </nav>
      <div class="container" style="color: grey;">
           {% block content %}{% endblock %}
-          <div valign="bottom">
+          <div align="bottom">
                <hr style="border: 5px solid grey;border-radius: 5px;" />
                <footer>
                     <center>&copy; {{ year }} - Library Management System</center>
@@ -58,7 +61,7 @@
      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js'></script>
-     <script src="{{ url_for('static',filename='script.js')}}"></script>
+<!--     <script src="{{ url_for('static',filename='script.js')}}"></script>-->
 </body>
 
 </html>
